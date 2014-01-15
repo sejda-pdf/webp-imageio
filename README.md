@@ -13,7 +13,7 @@ webp-imageio is distributed under the [Apache Software License](https://www.apac
 # Compiling
 - Install CMake 3.8 or newer. CMake can be downloaded from www.cmake.org or installed using
   your systems package manager.
-- Download [libwebp 0.3](https://webp.googlecode.com/files/libwebp-0.3.0.tar.gz) and extract it into the project directory
+- Download [libwebp 0.4](https://webp.googlecode.com/files/libwebp-0.4.0.tar.gz) and extract it into the project directory
 - Run 'cmake .' in the root of directory of the project to generate the build scripts for your system.
 - Build the project using the generated build scripts.
 - The build scripts will generate a number of binaries

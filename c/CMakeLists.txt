@@ -1,5 +1,5 @@
 set(
-  WEBP_HOME "${CMAKE_SOURCE_DIR}/libwebp-0.3.0"
+  WEBP_HOME "${CMAKE_SOURCE_DIR}/libwebp-0.4.0"
   CACHE FILEPATH "libwebp source directory"
 )
 
@@ -86,11 +86,13 @@ set(
 
 set(
   UTILS_DEC_OBJS
+  ${WEBP_HOME}/src/utils/alpha_processing.c
   ${WEBP_HOME}/src/utils/bit_reader.c
   ${WEBP_HOME}/src/utils/color_cache.c
   ${WEBP_HOME}/src/utils/filters.c
   ${WEBP_HOME}/src/utils/huffman.c
   ${WEBP_HOME}/src/utils/quant_levels_dec.c
+  ${WEBP_HOME}/src/utils/random.c
   ${WEBP_HOME}/src/utils/rescaler.c
   ${WEBP_HOME}/src/utils/thread.c
   ${WEBP_HOME}/src/utils/utils.c
