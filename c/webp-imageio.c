@@ -347,3 +347,6 @@ PROPERTY(WebPWriteParam, jint, get, set, AlphaCompression, WebPConfig, alpha_com
 PROPERTY(WebPWriteParam, jint, get, set, AlphaFiltering, WebPConfig, alpha_filtering)
 PROPERTY(WebPWriteParam, jint, get, set, AlphaQuality, WebPConfig, alpha_quality)
 PROPERTY(WebPWriteParam, jint, get, set, Lossless, WebPConfig, lossless)
+PROPERTY(WebPWriteParam, jint, get, set, EmulateJpegSize, WebPConfig, emulate_jpeg_size)
+PROPERTY(WebPWriteParam, jint, get, set, ThreadLevel, WebPConfig, thread_level)
+PROPERTY(WebPWriteParam, jint, get, set, LowMemory, WebPConfig, low_memory)

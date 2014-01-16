@@ -337,6 +337,54 @@ JNIEXPORT jint JNICALL Java_com_luciad_imageio_webp_WebPWriteParam_getLossless
 JNIEXPORT void JNICALL Java_com_luciad_imageio_webp_WebPWriteParam_setLossless
   (JNIEnv *, jclass, jlong, jint);
 
+/*
+ * Class:     com_luciad_imageio_webp_WebPWriteParam
+ * Method:    getEmulateJpegSize
+ * Signature: (J)I
+ */
+JNIEXPORT jint JNICALL Java_com_luciad_imageio_webp_WebPWriteParam_getEmulateJpegSize
+  (JNIEnv *, jclass, jlong);
+
+/*
+ * Class:     com_luciad_imageio_webp_WebPWriteParam
+ * Method:    setEmulateJpegSize
+ * Signature: (JI)V
+ */
+JNIEXPORT void JNICALL Java_com_luciad_imageio_webp_WebPWriteParam_setEmulateJpegSize
+  (JNIEnv *, jclass, jlong, jint);
+
+/*
+ * Class:     com_luciad_imageio_webp_WebPWriteParam
+ * Method:    getThreadLevel
+ * Signature: (J)I
+ */
+JNIEXPORT jint JNICALL Java_com_luciad_imageio_webp_WebPWriteParam_getThreadLevel
+  (JNIEnv *, jclass, jlong);
+
+/*
+ * Class:     com_luciad_imageio_webp_WebPWriteParam
+ * Method:    setThreadLevel
+ * Signature: (JI)V
+ */
+JNIEXPORT void JNICALL Java_com_luciad_imageio_webp_WebPWriteParam_setThreadLevel
+  (JNIEnv *, jclass, jlong, jint);
+
+/*
+ * Class:     com_luciad_imageio_webp_WebPWriteParam
+ * Method:    getLowMemory
+ * Signature: (J)I
+ */
+JNIEXPORT jint JNICALL Java_com_luciad_imageio_webp_WebPWriteParam_getLowMemory
+  (JNIEnv *, jclass, jlong);
+
+/*
+ * Class:     com_luciad_imageio_webp_WebPWriteParam
+ * Method:    setLowMemory
+ * Signature: (JI)V
+ */
+JNIEXPORT void JNICALL Java_com_luciad_imageio_webp_WebPWriteParam_setLowMemory
+  (JNIEnv *, jclass, jlong, jint);
+
 #ifdef __cplusplus
 }
 #endif

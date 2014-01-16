@@ -151,28 +151,28 @@ public class WebPWriteParam extends ImageWriteParam {
     setFilterType( fPointer, aFilterType );
   }
 
-  public int getAutofilter() {
-    return getAutofilter( fPointer );
+  public boolean isAutoAdjustFilterStrength() {
+    return getAutofilter( fPointer ) != 0;
   }
 
-  public void setAutofilter( int aAutofilter ) {
-    setAutofilter( fPointer, aAutofilter );
+  public void setAutoAdjustFilterStrength( boolean aAutofilter ) {
+    setAutofilter( fPointer, aAutofilter ? 1 : 0 );
   }
 
-  public int getPass() {
+  public int getEntropyAnalysisPassCount() {
     return getPass( fPointer );
   }
 
-  public void setPass( int aPass ) {
+  public void setEntropyAnalysisPassCount( int aPass ) {
     setPass( fPointer, aPass );
   }
 
-  public int getShowCompressed() {
-    return getShowCompressed( fPointer );
+  public boolean isShowCompressed() {
+    return getShowCompressed( fPointer ) != 0;
   }
 
-  public void setShowCompressed( int aShowCompressed ) {
-    setShowCompressed( fPointer, aShowCompressed );
+  public void setShowCompressed( boolean aShowCompressed ) {
+    setShowCompressed( fPointer, aShowCompressed ? 1 : 0 );
   }
 
   public int getPreprocessing() {
@@ -221,6 +221,30 @@ public class WebPWriteParam extends ImageWriteParam {
 
   public void setAlphaQuality( int aAlphaQuality ) {
     setAlphaQuality( fPointer, aAlphaQuality );
+  }
+
+  public boolean isEmulateJpegSize() {
+    return getEmulateJpegSize( fPointer ) != 0;
+  }
+
+  public void setEmulateJpegSize( boolean aEmulateJpegSize ) {
+    setEmulateJpegSize( fPointer, aEmulateJpegSize ? 1 : 0 );
+  }
+
+  public int getThreadLevel() {
+    return getThreadLevel( fPointer );
+  }
+
+  public void setThreadLevel( int aThreadLevel ) {
+    setThreadLevel( fPointer, aThreadLevel );
+  }
+
+  public boolean isReduceMemoryUsage() {
+    return getLowMemory( fPointer ) != 0;
+  }
+
+  public void setReduceMemoryUsage( boolean aLowMemory ) {
+    setLowMemory( fPointer, aLowMemory ? 1 : 0 );
   }
 
   private static native float getQuality( long aPointer );
@@ -298,4 +322,16 @@ public class WebPWriteParam extends ImageWriteParam {
   private static native int getLossless( long aPointer );
 
   private static native void setLossless( long aPointer, int aLossless );
+
+  private static native int getEmulateJpegSize( long aPointer );
+
+  private static native void setEmulateJpegSize( long aPointer, int aEmulateJpegSize );
+
+  private static native int getThreadLevel( long aPointer );
+
+  private static native void setThreadLevel( long aPointer, int aThreadLevel );
+
+  private static native int getLowMemory( long aPointer );
+
+  private static native void setLowMemory( long aPointer, int aLowMemory );
 }
