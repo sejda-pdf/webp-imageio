@@ -144,3 +144,14 @@ target_link_libraries( webp-imageio "m" )
 set_target_properties(
   webp-imageio PROPERTIES COMPILE_FLAGS "-Wextra -Wold-style-definition -Wmissing-prototypes -Wmissing-declarations -Wdeclaration-after-statement -Wshadow"
 )
+
+#
+# Strip 'lib' prefix when compiling for windows
+#
+if ( WIN32 )
+  set_target_properties ( webp-imageio PROPERTIES PREFIX "" )
+endif()
+
+if(WIN32 AND NOT MSVC)
+  set_target_properties( webp-imageio PROPERTIES LINK_FLAGS "-Wl,--kill-at")
+endif()

@@ -32,6 +32,7 @@ add_custom_command(
           -encoding utf-8
           -source 1.6
           -target 1.6
+          -nowarn
           ${JAVA_SOURCE_FILES}
       COMMAND ${CMAKE_COMMAND} -E touch "${CLASSES_DIR}"
       DEPENDS ${JAVA_SOURCE_FILES}
