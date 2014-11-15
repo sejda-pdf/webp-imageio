@@ -146,27 +146,36 @@ include_directories( ${JNI_INCLUDE_DIRS} )
 
 find_package ( Threads )
 if ( CMAKE_USE_PTHREADS_INIT )
-  add_definitions( -DWEBP_USE_THREAD )
+  target_compile_definitions( webp-imageio PRIVATE WEBP_USE_THREAD )
   target_link_libraries( webp-imageio "${CMAKE_THREAD_LIBS_INIT}" )
 elseif ( CMAKE_USE_WIN32_THREADS_INIT )
-  add_definitions( -DWEBP_USE_THREAD )
+  target_compile_definitions( webp-imageio PRIVATE WEBP_USE_THREAD )
 endif()
 
 target_link_libraries( webp-imageio "m" )
 
-set_target_properties(
-  webp-imageio PROPERTIES COMPILE_FLAGS "-Wextra -Wold-style-definition -Wmissing-prototypes -Wmissing-declarations -Wdeclaration-after-statement -Wshadow"
-)
-
-#
-# Strip 'lib' prefix when compiling for windows
-#
-if ( WIN32 )
-  set_target_properties ( webp-imageio PROPERTIES PREFIX "" )
+if( NOT MSVC )
+  target_compile_options( webp-imageio PRIVATE
+    -Wextra
+    -Wold-style-definition
+    -Wmissing-prototypes
+    -Wmissing-declarations
+    -Wdeclaration-after-statement
+    -Wshadow
+  )
 endif()
 
-if(WIN32 AND NOT MSVC)
-  set_target_properties( webp-imageio PROPERTIES LINK_FLAGS "-Wl,--kill-at")
+if ( CMAKE_SYSTEM_PROCESSOR MATCHES .*86.*" OR CMAKE_SYSTEM_PROCESSOR MATCHES "amd64" )
+  target_compile_definitions( webp-imageio PRIVATE WEBP_USE_SSE2 WEBP_USE_AVX2 )
+endif()
+
+if ( WIN32 )
+  # Strip 'lib' prefix when compiling for windows
+  set_target_properties ( webp-imageio PROPERTIES PREFIX "" )
+
+  if( NOT MSVC )
+    set_target_properties( webp-imageio PROPERTIES LINK_FLAGS "-Wl,--kill-at")
+  endif()
 endif()
 
 if ( APPLE )
