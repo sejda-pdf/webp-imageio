@@ -168,3 +168,8 @@ endif()
 if(WIN32 AND NOT MSVC)
   set_target_properties( webp-imageio PROPERTIES LINK_FLAGS "-Wl,--kill-at")
 endif()
+
+if ( APPLE )
+  target_compile_options( webp-imageio PRIVATE -mmacosx-version-min=10.5 )
+  set_target_properties( webp-imageio PROPERTIES MACOSX_RPATH OFF )
+endif()
