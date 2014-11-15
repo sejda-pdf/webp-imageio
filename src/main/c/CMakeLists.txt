@@ -165,10 +165,6 @@ if( NOT MSVC )
   )
 endif()
 
-if ( CMAKE_SYSTEM_PROCESSOR MATCHES ".*86.*" OR CMAKE_SYSTEM_PROCESSOR MATCHES "amd64" )
-  target_compile_definitions( webp-imageio PRIVATE WEBP_USE_SSE2 WEBP_USE_AVX2 )
-endif()
-
 if ( WIN32 )
   # Strip 'lib' prefix when compiling for windows
   set_target_properties ( webp-imageio PROPERTIES PREFIX "" )
