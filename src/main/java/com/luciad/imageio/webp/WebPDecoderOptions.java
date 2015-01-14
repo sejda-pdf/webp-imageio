@@ -15,16 +15,14 @@
  */
 package com.luciad.imageio.webp;
 
-import javax.imageio.ImageReadParam;
-
-public final class WebPReadParam extends ImageReadParam {
+public final class WebPDecoderOptions {
   static {
     WebP.loadNativeLibrary();
   }
 
   long fPointer;
 
-  public WebPReadParam() {
+  public WebPDecoderOptions() {
     fPointer = createDecoderOptions();
     if ( fPointer == 0 ) {
       throw new OutOfMemoryError();

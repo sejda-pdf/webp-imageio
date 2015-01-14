@@ -7,6 +7,9 @@ define 'webp-imageio', :version => THIS_VERSION do
   no_ipr
   iml.jdk_version = '1.7'
 
+  compile.from _('src/main/java'), _('src/javase/java')
+  resources.from _('src/javase/resources')
+
   test.with JUNIT
   test.using :fork => true,
              :properties => {

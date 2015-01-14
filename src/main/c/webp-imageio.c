@@ -21,8 +21,8 @@
 #include <webp/encode.h>
 
 #include "com_luciad_imageio_webp_WebP.h"
-#include "com_luciad_imageio_webp_WebPReadParam.h"
-#include "com_luciad_imageio_webp_WebPWriteParam.h"
+#include "com_luciad_imageio_webp_WebPDecoderOptions.h"
+#include "com_luciad_imageio_webp_WebPEncoderOptions.h"
 
 #ifdef UNUSED 
 #elif defined(__GNUC__) 
@@ -214,31 +214,31 @@ JNIEXPORT void JNICALL Java_com_luciad_imageio_webp_##cls##_##set##property \
   options->field = value; \
 }
 
-JNIEXPORT jlong JNICALL Java_com_luciad_imageio_webp_WebPReadParam_createDecoderOptions
+JNIEXPORT jlong JNICALL Java_com_luciad_imageio_webp_WebPDecoderOptions_createDecoderOptions
   (JNIEnv* UNUSED(env), jclass UNUSED(cls)) {
   WebPDecoderOptions* options = calloc(1, sizeof(WebPDecoderOptions));
   return (jlong)(intptr_t)options;
 }
 
-JNIEXPORT void JNICALL Java_com_luciad_imageio_webp_WebPReadParam_deleteDecoderOptions
+JNIEXPORT void JNICALL Java_com_luciad_imageio_webp_WebPDecoderOptions_deleteDecoderOptions
   (JNIEnv* UNUSED(env), jclass UNUSED(cls_), jlong optionsPtr) {
   WebPDecoderOptions* options = (WebPDecoderOptions*) (intptr_t) optionsPtr;
   free(options);
 }
 
-PROPERTY(WebPReadParam, jint, get, set, CropHeight, WebPDecoderOptions, crop_height)
-PROPERTY(WebPReadParam, jint, get, set, CropLeft, WebPDecoderOptions, crop_left)
-PROPERTY(WebPReadParam, jint, get, set, CropTop, WebPDecoderOptions, crop_top)
-PROPERTY(WebPReadParam, jint, get, set, CropWidth, WebPDecoderOptions, crop_width)
-PROPERTY(WebPReadParam, jboolean, is, set, ForceRotation, WebPDecoderOptions, force_rotation)
-PROPERTY(WebPReadParam, jboolean, is, set, NoEnhancement, WebPDecoderOptions, no_enhancement)
-PROPERTY(WebPReadParam, jboolean, is, set, NoFancyUpsampling, WebPDecoderOptions, no_fancy_upsampling)
-PROPERTY(WebPReadParam, jint, get, set, ScaledWidth, WebPDecoderOptions, scaled_width)
-PROPERTY(WebPReadParam, jint, get, set, ScaledHeight, WebPDecoderOptions, scaled_height)
-PROPERTY(WebPReadParam, jboolean, is, set, UseCropping, WebPDecoderOptions, use_cropping)
-PROPERTY(WebPReadParam, jboolean, is, set, UseScaling, WebPDecoderOptions, use_scaling)
-PROPERTY(WebPReadParam, jboolean, is, set, UseThreads, WebPDecoderOptions, use_threads)
-PROPERTY(WebPReadParam, jboolean, is, set, BypassFiltering, WebPDecoderOptions, bypass_filtering)
+PROPERTY(WebPDecoderOptions, jint, get, set, CropHeight, WebPDecoderOptions, crop_height)
+PROPERTY(WebPDecoderOptions, jint, get, set, CropLeft, WebPDecoderOptions, crop_left)
+PROPERTY(WebPDecoderOptions, jint, get, set, CropTop, WebPDecoderOptions, crop_top)
+PROPERTY(WebPDecoderOptions, jint, get, set, CropWidth, WebPDecoderOptions, crop_width)
+PROPERTY(WebPDecoderOptions, jboolean, is, set, ForceRotation, WebPDecoderOptions, force_rotation)
+PROPERTY(WebPDecoderOptions, jboolean, is, set, NoEnhancement, WebPDecoderOptions, no_enhancement)
+PROPERTY(WebPDecoderOptions, jboolean, is, set, NoFancyUpsampling, WebPDecoderOptions, no_fancy_upsampling)
+PROPERTY(WebPDecoderOptions, jint, get, set, ScaledWidth, WebPDecoderOptions, scaled_width)
+PROPERTY(WebPDecoderOptions, jint, get, set, ScaledHeight, WebPDecoderOptions, scaled_height)
+PROPERTY(WebPDecoderOptions, jboolean, is, set, UseCropping, WebPDecoderOptions, use_cropping)
+PROPERTY(WebPDecoderOptions, jboolean, is, set, UseScaling, WebPDecoderOptions, use_scaling)
+PROPERTY(WebPDecoderOptions, jboolean, is, set, UseThreads, WebPDecoderOptions, use_threads)
+PROPERTY(WebPDecoderOptions, jboolean, is, set, BypassFiltering, WebPDecoderOptions, bypass_filtering)
 
 typedef int (*Importer)(WebPPicture* const, const uint8_t* const, int);
 
@@ -312,7 +312,7 @@ JNIEXPORT jbyteArray JNICALL Java_com_luciad_imageio_webp_WebP_encodeRGB
   return encode(env, configPtr, WebPPictureImportRGB, data, width, height, stride);
 }
 
-JNIEXPORT jlong JNICALL Java_com_luciad_imageio_webp_WebPWriteParam_createConfig
+JNIEXPORT jlong JNICALL Java_com_luciad_imageio_webp_WebPEncoderOptions_createConfig
   (JNIEnv* UNUSED(env), jclass UNUSED(cls_)) {
   WebPConfig* config = calloc(1, sizeof(WebPConfig));
   if (config) {
@@ -321,31 +321,31 @@ JNIEXPORT jlong JNICALL Java_com_luciad_imageio_webp_WebPWriteParam_createConfig
   return (jlong)(intptr_t)config;
 }
 
-JNIEXPORT void JNICALL Java_com_luciad_imageio_webp_WebPWriteParam_deleteConfig
+JNIEXPORT void JNICALL Java_com_luciad_imageio_webp_WebPEncoderOptions_deleteConfig
   (JNIEnv* UNUSED(env), jclass UNUSED(cls_), jlong configPtr) {
   WebPConfig* config = (WebPConfig*) (intptr_t) configPtr;
   free(config);
 }
 
-PROPERTY(WebPWriteParam, jfloat, get, set, Quality, WebPConfig, quality)
-PROPERTY(WebPWriteParam, jint, get, set, TargetSize, WebPConfig, target_size)
-PROPERTY(WebPWriteParam, jfloat, get, set, TargetPSNR, WebPConfig, target_PSNR)
-PROPERTY(WebPWriteParam, jint, get, set, Method, WebPConfig, method)
-PROPERTY(WebPWriteParam, jint, get, set, Segments, WebPConfig, segments)
-PROPERTY(WebPWriteParam, jint, get, set, SnsStrength, WebPConfig, sns_strength)
-PROPERTY(WebPWriteParam, jint, get, set, FilterStrength, WebPConfig, filter_strength)
-PROPERTY(WebPWriteParam, jint, get, set, FilterSharpness, WebPConfig, filter_sharpness)
-PROPERTY(WebPWriteParam, jint, get, set, FilterType, WebPConfig, filter_type)
-PROPERTY(WebPWriteParam, jint, get, set, Autofilter, WebPConfig, autofilter)
-PROPERTY(WebPWriteParam, jint, get, set, Pass, WebPConfig, pass)
-PROPERTY(WebPWriteParam, jint, get, set, ShowCompressed, WebPConfig, show_compressed)
-PROPERTY(WebPWriteParam, jint, get, set, Preprocessing, WebPConfig, preprocessing)
-PROPERTY(WebPWriteParam, jint, get, set, Partitions, WebPConfig, partitions)
-PROPERTY(WebPWriteParam, jint, get, set, PartitionLimit, WebPConfig, partition_limit)
-PROPERTY(WebPWriteParam, jint, get, set, AlphaCompression, WebPConfig, alpha_compression)
-PROPERTY(WebPWriteParam, jint, get, set, AlphaFiltering, WebPConfig, alpha_filtering)
-PROPERTY(WebPWriteParam, jint, get, set, AlphaQuality, WebPConfig, alpha_quality)
-PROPERTY(WebPWriteParam, jint, get, set, Lossless, WebPConfig, lossless)
-PROPERTY(WebPWriteParam, jint, get, set, EmulateJpegSize, WebPConfig, emulate_jpeg_size)
-PROPERTY(WebPWriteParam, jint, get, set, ThreadLevel, WebPConfig, thread_level)
-PROPERTY(WebPWriteParam, jint, get, set, LowMemory, WebPConfig, low_memory)
+PROPERTY(WebPEncoderOptions, jfloat, get, set, Quality, WebPConfig, quality)
+PROPERTY(WebPEncoderOptions, jint, get, set, TargetSize, WebPConfig, target_size)
+PROPERTY(WebPEncoderOptions, jfloat, get, set, TargetPSNR, WebPConfig, target_PSNR)
+PROPERTY(WebPEncoderOptions, jint, get, set, Method, WebPConfig, method)
+PROPERTY(WebPEncoderOptions, jint, get, set, Segments, WebPConfig, segments)
+PROPERTY(WebPEncoderOptions, jint, get, set, SnsStrength, WebPConfig, sns_strength)
+PROPERTY(WebPEncoderOptions, jint, get, set, FilterStrength, WebPConfig, filter_strength)
+PROPERTY(WebPEncoderOptions, jint, get, set, FilterSharpness, WebPConfig, filter_sharpness)
+PROPERTY(WebPEncoderOptions, jint, get, set, FilterType, WebPConfig, filter_type)
+PROPERTY(WebPEncoderOptions, jint, get, set, Autofilter, WebPConfig, autofilter)
+PROPERTY(WebPEncoderOptions, jint, get, set, Pass, WebPConfig, pass)
+PROPERTY(WebPEncoderOptions, jint, get, set, ShowCompressed, WebPConfig, show_compressed)
+PROPERTY(WebPEncoderOptions, jint, get, set, Preprocessing, WebPConfig, preprocessing)
+PROPERTY(WebPEncoderOptions, jint, get, set, Partitions, WebPConfig, partitions)
+PROPERTY(WebPEncoderOptions, jint, get, set, PartitionLimit, WebPConfig, partition_limit)
+PROPERTY(WebPEncoderOptions, jint, get, set, AlphaCompression, WebPConfig, alpha_compression)
+PROPERTY(WebPEncoderOptions, jint, get, set, AlphaFiltering, WebPConfig, alpha_filtering)
+PROPERTY(WebPEncoderOptions, jint, get, set, AlphaQuality, WebPConfig, alpha_quality)
+PROPERTY(WebPEncoderOptions, jint, get, set, Lossless, WebPConfig, lossless)
+PROPERTY(WebPEncoderOptions, jint, get, set, EmulateJpegSize, WebPConfig, emulate_jpeg_size)
+PROPERTY(WebPEncoderOptions, jint, get, set, ThreadLevel, WebPConfig, thread_level)
+PROPERTY(WebPEncoderOptions, jint, get, set, LowMemory, WebPConfig, low_memory)

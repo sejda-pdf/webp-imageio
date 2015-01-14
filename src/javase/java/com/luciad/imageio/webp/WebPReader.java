@@ -22,9 +22,16 @@ import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.spi.ImageReaderSpi;
 import javax.imageio.stream.ImageInputStream;
 import java.awt.image.BufferedImage;
+import java.awt.image.ColorModel;
+import java.awt.image.DataBufferInt;
+import java.awt.image.DirectColorModel;
+import java.awt.image.SampleModel;
+import java.awt.image.WritableRaster;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.nio.ByteOrder;
 import java.util.Collections;
+import java.util.Hashtable;
 import java.util.Iterator;
 
 class WebPReader extends ImageReader {
@@ -145,7 +152,26 @@ class WebPReader extends ImageReader {
     checkIndex( imageIndex );
     readData();
     readHeader();
-    WebPReadParam options = param != null ? (WebPReadParam) param : new WebPReadParam();
-    return WebP.decode( options, fData, 0, fData.length );
+    WebPReadParam readParam = param != null ? (WebPReadParam) param : new WebPReadParam();
+
+    int[] outParams = new int[4];
+    int[] pixels = WebP.decode(readParam.getDecoderOptions(), fData, 0, fData.length, outParams);
+
+    int width = outParams[1];
+    int height = outParams[2];
+    boolean alpha = outParams[3] != 0;
+
+    ColorModel colorModel;
+    if ( alpha ) {
+      colorModel = new DirectColorModel( 32, 0x00ff0000, 0x0000ff00, 0x000000ff, 0xff000000 );
+    } else {
+      colorModel = new DirectColorModel( 24, 0x00ff0000, 0x0000ff00, 0x000000ff, 0x00000000 );
+    }
+
+    SampleModel sampleModel = colorModel.createCompatibleSampleModel( width, height );
+    DataBufferInt db = new DataBufferInt( pixels, width * height );
+    WritableRaster raster = WritableRaster.createWritableRaster(sampleModel, db, null);
+
+    return new BufferedImage( colorModel, raster, false, new Hashtable<Object, Object>() );
   }
 }

@@ -15,32 +15,18 @@
  */
 package com.luciad.imageio.webp;
 
-import javax.imageio.ImageWriteParam;
-import java.util.Locale;
-
-public class WebPWriteParam extends ImageWriteParam {
+public class WebPEncoderOptions {
   static {
     WebP.loadNativeLibrary();
   }
 
   long fPointer;
-  private final int defaultLossless;
 
-  public WebPWriteParam( Locale aLocale ) {
-    super( aLocale );
+  public WebPEncoderOptions() {
     fPointer = createConfig();
     if ( fPointer == 0 ) {
       throw new OutOfMemoryError();
     }
-    defaultLossless = getLossless( fPointer );
-    canWriteCompressed = true;
-    compressionTypes = new String[]{
-        "Lossy",
-        "Lossless"
-    };
-    compressionType = compressionTypes[defaultLossless];
-    compressionQuality = getQuality( fPointer ) / 100f;
-    compressionMode = MODE_EXPLICIT;
   }
 
   @Override
@@ -58,33 +44,20 @@ public class WebPWriteParam extends ImageWriteParam {
     return fPointer;
   }
 
-  @Override
   public float getCompressionQuality() {
-    return super.getCompressionQuality();
+    return getQuality(fPointer);
   }
 
-  @Override
   public void setCompressionQuality( float quality ) {
-    super.setCompressionQuality( quality );
-    setQuality( fPointer, quality * 100f );
+    setQuality( fPointer, quality );
   }
 
-  @Override
-  public void setCompressionType( String compressionType ) {
-    super.setCompressionType( compressionType );
-    for ( int i = 0; i < compressionTypes.length; i++ ) {
-      if ( compressionTypes[i].equals( compressionType ) ) {
-        setLossless( fPointer, i );
-        break;
-      }
-    }
-
+  public boolean isLossless() {
+    return getLossless( fPointer ) != 0;
   }
 
-  @Override
-  public void unsetCompression() {
-    super.unsetCompression();
-    setLossless( fPointer, defaultLossless );
+  public void setLossless( boolean aLossless ) {
+    setLossless(fPointer, aLossless ? 1 : 0);
   }
 
   public int getTargetSize() {
