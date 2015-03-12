@@ -1,7 +1,7 @@
 repositories.remote << 'http://repo1.maven.org/maven2'
 
 JUNIT = 'junit:junit:jar:4.11'
-THIS_VERSION = '0.4.2.0-SNAPSHOT'
+THIS_VERSION = '0.4.3.0-SNAPSHOT'
 
 define 'webp-imageio', :version => THIS_VERSION do
   no_ipr
