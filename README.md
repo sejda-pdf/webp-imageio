@@ -7,7 +7,7 @@ webp-imageio is distributed under the [Apache Software License](https://www.apac
 
 # Usage
 - Add webp-imageio.jar to the classpath of your application
-- Ensure libwebp-jni.so or webp-jni.dll is accessible on the Java native library path (java.library.path system property)
+- Ensure libwebp-imageio.so, libwebp-imageio.dylib or webp-imageio.dll is accessible on the Java native library path (java.library.path system property)
 - The WebP reader and writer can be used like any other Image I/O reader and writer.
 
 # Compiling
