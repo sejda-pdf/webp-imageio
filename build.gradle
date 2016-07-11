@@ -1,0 +1,25 @@
+repositories {
+    mavenCentral()
+}
+
+apply plugin: 'java'
+
+dependencies {
+    testCompile 'junit:junit:4.11'
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir 'src/main/java'
+            srcDir 'src/javase/java'
+        }
+        resources {
+            srcDir 'src/javase/resources'
+        }
+    }
+}
+
+//:properties => {
+//    'java.library.path' => Buildr.settings.build['native_build_path']
+//}

@@ -89,38 +89,6 @@ JNIEXPORT void JNICALL Java_com_luciad_imageio_webp_WebPDecoderOptions_setCropWi
 
 /*
  * Class:     com_luciad_imageio_webp_WebPDecoderOptions
- * Method:    isForceRotation
- * Signature: (J)Z
- */
-JNIEXPORT jboolean JNICALL Java_com_luciad_imageio_webp_WebPDecoderOptions_isForceRotation
-  (JNIEnv *, jclass, jlong);
-
-/*
- * Class:     com_luciad_imageio_webp_WebPDecoderOptions
- * Method:    setForceRotation
- * Signature: (JZ)V
- */
-JNIEXPORT void JNICALL Java_com_luciad_imageio_webp_WebPDecoderOptions_setForceRotation
-  (JNIEnv *, jclass, jlong, jboolean);
-
-/*
- * Class:     com_luciad_imageio_webp_WebPDecoderOptions
- * Method:    isNoEnhancement
- * Signature: (J)Z
- */
-JNIEXPORT jboolean JNICALL Java_com_luciad_imageio_webp_WebPDecoderOptions_isNoEnhancement
-  (JNIEnv *, jclass, jlong);
-
-/*
- * Class:     com_luciad_imageio_webp_WebPDecoderOptions
- * Method:    setNoEnhancement
- * Signature: (JZ)V
- */
-JNIEXPORT void JNICALL Java_com_luciad_imageio_webp_WebPDecoderOptions_setNoEnhancement
-  (JNIEnv *, jclass, jlong, jboolean);
-
-/*
- * Class:     com_luciad_imageio_webp_WebPDecoderOptions
  * Method:    isFancyUpsampling
  * Signature: (J)Z
  */

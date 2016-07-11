@@ -23,12 +23,6 @@ webp-imageio is distributed under the [Apache Software License](https://www.apac
 
 ## Compiling the Java library
 
-### Using Buildr
-- Install [Buildr](http://buildr.apache.org)
-- Run 'buildr package test=false' in the root of the project
-- The compiled Java library can be found under the 'target' directory
-
-### Using Maven
-- Install [Maven](http://maven.apache.org)
-- Run 'mvn -Dmaven.test.skip=true package' in the root of the project
+### Using Gradle
+- Run 'gradle build -x test' in the root of the project
 - The compiled Java library can be found under the 'target' directory

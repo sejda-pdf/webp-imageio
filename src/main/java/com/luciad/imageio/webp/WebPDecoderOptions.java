@@ -68,22 +68,6 @@ public final class WebPDecoderOptions {
     setCropWidth( fPointer, aCropWidth );
   }
 
-  public boolean isForceRotation() {
-    return isForceRotation( fPointer );
-  }
-
-  public void setForceRotation( boolean aForceRotation ) {
-    setForceRotation( fPointer, aForceRotation );
-  }
-
-  public boolean isEnhancement() {
-    return !isNoEnhancement( fPointer );
-  }
-
-  public void setEnhancement( boolean aEnhancement ) {
-    setNoEnhancement( fPointer, !aEnhancement );
-  }
-
   public boolean isFancyUpsampling() {
     return !isNoFancyUpsampling( fPointer );
   }

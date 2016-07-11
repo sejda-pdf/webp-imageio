@@ -28,16 +28,8 @@ public final class WebPReadParam extends ImageReadParam {
     fOptions.setScaledHeight(aScaledHeight);
   }
 
-  public boolean isEnhancement() {
-    return fOptions.isEnhancement();
-  }
-
   public void setUseScaling(boolean aUseScaling) {
     fOptions.setUseScaling(aUseScaling);
-  }
-
-  public void setEnhancement(boolean aEnhancement) {
-    fOptions.setEnhancement(aEnhancement);
   }
 
   public void setUseThreads(boolean aUseThreads) {
@@ -54,10 +46,6 @@ public final class WebPReadParam extends ImageReadParam {
 
   public boolean isUseCropping() {
     return fOptions.isUseCropping();
-  }
-
-  public boolean isForceRotation() {
-    return fOptions.isForceRotation();
   }
 
   public void setCropWidth(int aCropWidth) {
@@ -90,10 +78,6 @@ public final class WebPReadParam extends ImageReadParam {
 
   public void setCropHeight(int aCropHeight) {
     fOptions.setCropHeight(aCropHeight);
-  }
-
-  public void setForceRotation(boolean aForceRotation) {
-    fOptions.setForceRotation(aForceRotation);
   }
 
   public void setFancyUpsampling(boolean aFancyUpsampling) {

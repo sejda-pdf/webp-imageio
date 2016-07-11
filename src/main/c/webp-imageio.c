@@ -230,8 +230,6 @@ PROPERTY(WebPDecoderOptions, jint, get, set, CropHeight, WebPDecoderOptions, cro
 PROPERTY(WebPDecoderOptions, jint, get, set, CropLeft, WebPDecoderOptions, crop_left)
 PROPERTY(WebPDecoderOptions, jint, get, set, CropTop, WebPDecoderOptions, crop_top)
 PROPERTY(WebPDecoderOptions, jint, get, set, CropWidth, WebPDecoderOptions, crop_width)
-PROPERTY(WebPDecoderOptions, jboolean, is, set, ForceRotation, WebPDecoderOptions, force_rotation)
-PROPERTY(WebPDecoderOptions, jboolean, is, set, NoEnhancement, WebPDecoderOptions, no_enhancement)
 PROPERTY(WebPDecoderOptions, jboolean, is, set, NoFancyUpsampling, WebPDecoderOptions, no_fancy_upsampling)
 PROPERTY(WebPDecoderOptions, jint, get, set, ScaledWidth, WebPDecoderOptions, scaled_width)
 PROPERTY(WebPDecoderOptions, jint, get, set, ScaledHeight, WebPDecoderOptions, scaled_height)
