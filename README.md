@@ -10,6 +10,65 @@ webp-imageio is distributed under the [Apache Software License](https://www.apac
 - Ensure libwebp-imageio.so, libwebp-imageio.dylib or webp-imageio.dll is accessible on the Java native library path (java.library.path system property)
 - The WebP reader and writer can be used like any other Image I/O reader and writer.
 
+## Decoding
+
+WebP images can be decoded using default settings as follows.
+
+```
+BufferedImage image = ImageIO.read(new File("input.webp"));
+```
+
+To customize the WebP decoder settings you need to create instances of ImageReader and WebPReadParam.
+
+```
+// Obtain a WebP ImageReader instance
+ImageReader reader = ImageIO.getImageReadersByMIMEType("image/webp").next();
+
+// Configure decoding parameters
+WebPReadParam readParam = new WebPReadParam();
+readParam.setBypassFiltering(true);
+
+// Configure the input on the ImageReader
+reader.setInput(new FileImageInputStream(new File("input.webp")));
+
+// Decode the image
+BufferedImage image = reader.read(0, readParam);
+```
+
+## Encoding
+
+Encoding is done in a similar way to decoding.
+
+You can either use the Image I/O convenience methods to encode using default settings.
+
+```
+// Obtain an image to encode from somewhere
+BufferedImage image = ImageIO.read(new File("input.png"));
+
+// Encode it as webp using default settings
+ImageIO.write(image, "webp", new File("output.webp"));
+```
+
+Or you can create an instance of ImageWriter and WebPWriteParam to use custom settings.
+
+```
+// Obtain an image to encode from somewhere
+BufferedImage image = ImageIO.read(new File("input.png"));
+
+// Obtain a WebP ImageWriter instance
+ImageWriter writer = ImageIO.getImageWritersByMIMEType("image/webp").next();
+
+// Configure encoding parameters
+WebPWriteParam writeParam = new WebPWriteParam(writer.getLocale());
+writeParam.setCompressionMode(WebPWriteParam.LOSSLESS_COMPRESSION);
+
+// Configure the output on the ImageWriter
+writer.setOutput(new FileImageOutputStream(new File("output.webp")));
+
+// Encode
+writer.write(null, new IIOImage(image, null, null), writeParam);
+```
+
 # Compiling
 
 ## Compiling the native library
