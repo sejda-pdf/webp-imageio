@@ -20,6 +20,6 @@ sourceSets {
     }
 }
 
-//:properties => {
-//    'java.library.path' => Buildr.settings.build['native_build_path']
-//}
+tasks.withType(Test) {
+  systemProperty 'java.library.path', file('build/src/main/c')
+}
