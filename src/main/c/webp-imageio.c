@@ -33,6 +33,31 @@
 # define UNUSED(x) x 
 #endif
 
+static int WebPRescalerGetScaledDimensions(int src_width, int src_height,
+                                           int* const scaled_width,
+                                           int* const scaled_height) {
+  // TODO: copied from utils/rescaler_utils.c. Not available in the public libwebp API.
+  int width = *scaled_width;
+  int height = *scaled_height;
+
+  // if width is unspecified, scale original proportionally to height ratio.
+  if (width == 0) {
+    width = (src_width * height + src_height / 2) / src_height;
+  }
+  // if height is unspecified, scale original proportionally to width ratio.
+  if (height == 0) {
+    height = (src_height * width + src_width / 2) / src_width;
+  }
+  // Check if the overall dimensions still make sense.
+  if (width <= 0 || height <= 0) {
+    return 0;
+  }
+
+  *scaled_width = width;
+  *scaled_height = height;
+  return 1;
+}
+
 static VP8StatusCode setDecBufferSize(WebPDecoderConfig* const out) {
   // TODO: this is a copy of WebPAllocateDecBuffer from dec/buffer.c. Width/height determination should be shared.
   int w, h;
@@ -58,11 +83,13 @@ static VP8StatusCode setDecBufferSize(WebPDecoderConfig* const out) {
     h = ch;
   }
   if (out->options.use_scaling) {
-    if (out->options.scaled_width <= 0 || out->options.scaled_height <= 0) {
+    int scaled_width = out->options.scaled_width;
+    int scaled_height = out->options.scaled_height;
+    if (!WebPRescalerGetScaledDimensions(w, h, &scaled_width, &scaled_height)) {
       return VP8_STATUS_INVALID_PARAM;
     }
-    w = out->options.scaled_width;
-    h = out->options.scaled_height;
+    w = scaled_width;
+    h = scaled_height;
   }
 
   out->output.width = w;
