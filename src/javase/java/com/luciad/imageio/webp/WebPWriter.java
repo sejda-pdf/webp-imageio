@@ -23,15 +23,9 @@ import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.spi.ImageWriterSpi;
 import javax.imageio.stream.ImageOutputStream;
 
-import java.awt.image.ColorModel;
-import java.awt.image.ComponentColorModel;
-import java.awt.image.ComponentSampleModel;
-import java.awt.image.DataBuffer;
-import java.awt.image.DataBufferByte;
-import java.awt.image.DataBufferInt;
-import java.awt.image.DirectColorModel;
-import java.awt.image.RenderedImage;
-import java.awt.image.SinglePixelPackedSampleModel;
+import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.awt.image.*;
 import java.io.IOException;
 
 class WebPWriter extends ImageWriter {
@@ -133,23 +127,13 @@ class WebPWriter extends ImageWriter {
       } else {
         throw new IOException("Incompatible image: " + aRi);
       }
+    } else {
+      BufferedImage i = new BufferedImage(aRi.getWidth(), aRi.getHeight(), BufferedImage.TYPE_INT_RGB);
+      Graphics2D g = i.createGraphics();
+      g.drawRenderedImage(aRi, new AffineTransform());
+      g.dispose();
+      return getRGB(i);
     }
-
-    return extractGenericRGB(aRi, width, height, colorModel);
-  }
-
-  private static byte[] extractGenericRGB(RenderedImage aRi, int aWidth, int aHeight, ColorModel aColorModel) {
-    Object dataElements = null;
-    byte[] rgbData = new byte[aWidth * aHeight * 3];
-    for (int b = 0, y = 0; y < aHeight; y++) {
-      for (int x = 0; x < aWidth; x++, b += 3) {
-        dataElements = aRi.getData().getDataElements(x, y, dataElements);
-        rgbData[b] = (byte) aColorModel.getRed(dataElements);
-        rgbData[b + 1] = (byte) aColorModel.getGreen(dataElements);
-        rgbData[b + 2] = (byte) aColorModel.getBlue(dataElements);
-      }
-    }
-    return rgbData;
   }
 
   private static byte[] extractDirectRGBInt(int aWidth, int aHeight, DirectColorModel aColorModel, SinglePixelPackedSampleModel aSampleModel, DataBufferInt aDataBuffer) {
@@ -268,24 +252,13 @@ class WebPWriter extends ImageWriter {
       } else {
         throw new IOException("Incompatible image: " + aRi);
       }
+    } else {
+      BufferedImage i = new BufferedImage(aRi.getWidth(), aRi.getHeight(), BufferedImage.TYPE_INT_ARGB);
+      Graphics2D g = i.createGraphics();
+      g.drawRenderedImage(aRi, new AffineTransform());
+      g.dispose();
+      return getRGB(i);
     }
-
-    return extractGenericRGBA(aRi, width, height, colorModel);
-  }
-
-  private static byte[] extractGenericRGBA(RenderedImage aRi, int aWidth, int aHeight, ColorModel aColorModel) {
-    Object dataElements = null;
-    byte[] rgbData = new byte[aWidth * aHeight * 4];
-    for (int b = 0, y = 0; y < aHeight; y++) {
-      for (int x = 0; x < aWidth; x++, b += 4) {
-        dataElements = aRi.getData().getDataElements(x, y, dataElements);
-        rgbData[b] = (byte) aColorModel.getRed(dataElements);
-        rgbData[b + 1] = (byte) aColorModel.getGreen(dataElements);
-        rgbData[b + 2] = (byte) aColorModel.getBlue(dataElements);
-        rgbData[b + 3] = (byte) aColorModel.getAlpha(dataElements);
-      }
-    }
-    return rgbData;
   }
 
   private static byte[] extractDirectRGBAInt(int aWidth, int aHeight, DirectColorModel aColorModel, SinglePixelPackedSampleModel aSampleModel, DataBufferInt aDataBuffer) {
