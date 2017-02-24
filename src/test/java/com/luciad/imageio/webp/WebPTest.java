@@ -7,9 +7,7 @@ import javax.imageio.stream.MemoryCacheImageInputStream;
 import javax.imageio.stream.MemoryCacheImageOutputStream;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.Iterator;
 import java.util.Random;
 
@@ -62,6 +60,65 @@ public class WebPTest {
                 "Image writer was not registered",
                 findWriter(ImageIO.getImageWritersBySuffix("webp"))
         );
+    }
+
+    @Test
+    public void testDecompressLossy() throws IOException
+    {
+        byte[] webpData = readResource("lossy.webp");
+        BufferedImage image = decompress(webpData);
+        assertEquals(1024, image.getWidth());
+        assertEquals(752, image.getHeight());
+    }
+
+    @Test
+    public void testDecompressLossless() throws IOException
+    {
+        byte[] webpData = readResource("lossless.webp");
+        BufferedImage image = decompress(webpData);
+        assertEquals(400, image.getWidth());
+        assertEquals(301, image.getHeight());
+    }
+
+    @Test
+    public void testDecompressLossyAlpha() throws IOException
+    {
+        byte[] webpData = readResource("lossy_alpha.webp");
+        BufferedImage image = decompress(webpData);
+        assertEquals(400, image.getWidth());
+        assertEquals(301, image.getHeight());
+    }
+
+    private byte[] readResource(String resource) throws IOException
+    {
+        InputStream stream = getClass().getClassLoader().getResourceAsStream(resource);
+        if (stream == null) {
+            throw new FileNotFoundException("Could not load resource " + resource);
+        }
+
+        try {
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            try {
+                byte[] buffer = new byte[4096];
+                int bytesRead;
+                while ((bytesRead = stream.read(buffer)) != -1) {
+                    out.write(buffer, 0, bytesRead);
+                }
+            } finally {
+                out.close();
+            }
+            return out.toByteArray();
+        } finally {
+            stream.close();
+        }
+    }
+
+    private BufferedImage decompress(byte[] webp) throws IOException {
+        ImageReader reader = getImageReader(webp);
+        assertNotNull(reader);
+
+        reader.setInput(new MemoryCacheImageInputStream(new ByteArrayInputStream(webp)));
+        return reader.read(0);
     }
 
     @Test
@@ -138,6 +195,11 @@ public class WebPTest {
 
     private ImageReader getImageReader() {
         return findReader(ImageIO.getImageReadersByMIMEType("image/webp"));
+    }
+
+    private ImageReader getImageReader(byte[] data) {
+        MemoryCacheImageInputStream stream = new MemoryCacheImageInputStream(new ByteArrayInputStream(data));
+        return findReader(ImageIO.getImageReaders(stream));
     }
 
     private ImageReader findReader(Iterator<ImageReader> readers) {
