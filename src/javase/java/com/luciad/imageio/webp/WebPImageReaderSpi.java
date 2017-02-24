@@ -30,6 +30,7 @@ public class WebPImageReaderSpi extends ImageReaderSpi {
   private static final byte[] RIFF = new byte[]{ 'R', 'I', 'F', 'F' };
   private static final byte[] WEBP = new byte[]{ 'W', 'E', 'B', 'P' };
   private static final byte[] VP8_ = new byte[]{ 'V', 'P', '8', ' ' };
+  private static final byte[] VP8L = new byte[]{ 'V', 'P', '8', 'L' };
   private static final byte[] VP8X = new byte[]{ 'V', 'P', '8', 'X' };
 
   public WebPImageReaderSpi() {
@@ -88,7 +89,7 @@ public class WebPImageReaderSpi extends ImageReaderSpi {
       }
 
       stream.readFully( b );
-      if ( !Arrays.equals( b, VP8_ ) && !Arrays.equals( b, VP8X ) ) {
+      if ( !Arrays.equals( b, VP8_ ) && !Arrays.equals( b, VP8L ) && !Arrays.equals( b, VP8X ) ) {
         return false;
       }
     } finally {
