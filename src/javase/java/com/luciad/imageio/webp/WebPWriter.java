@@ -73,7 +73,8 @@ class WebPWriter extends ImageWriter {
     output.write(encodedData);
   }
 
-  private static byte[] encode(WebPEncoderOptions aOptions, RenderedImage aImage) throws IOException {
+  private static byte[] encode(WebPEncoderOptions aOptions, RenderedImage aImage) throws IOException
+  {
     if (aOptions == null) {
       throw new NullPointerException("Encoder options may not be null");
     }
@@ -257,7 +258,7 @@ class WebPWriter extends ImageWriter {
       Graphics2D g = i.createGraphics();
       g.drawRenderedImage(aRi, new AffineTransform());
       g.dispose();
-      return getRGB(i);
+      return getRGBA(i);
     }
   }
 
