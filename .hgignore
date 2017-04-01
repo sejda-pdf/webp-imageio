@@ -1,6 +1,10 @@
 syntax: glob
 .idea
+.ideatmp
 out
 build
+cmake-build-*
 .gradle
 *.iml
+*.imltmp
+.DS_Store
