@@ -22,21 +22,23 @@ public class WebPBitmapCodec {
     );
   }
 
-  public static void compress(Bitmap aBitmap, OutputStream aOutputStream) {
+  public static void compress(Bitmap aBitmap, OutputStream aOutputStream) throws IOException {
     compress(aBitmap, aOutputStream, new WebPEncoderOptions());
   }
 
-  public static void compress(Bitmap aBitmap, OutputStream aOutputStream, WebPEncoderOptions aOptions) {
+  public static void compress(Bitmap aBitmap, OutputStream aOutputStream, WebPEncoderOptions aOptions) throws IOException {
     int width = aBitmap.getWidth();
     int height = aBitmap.getHeight();
 
+    byte[] encoded;
     if (aBitmap.hasAlpha()) {
       byte[] rgba = extractRGBA(aBitmap);
-      WebP.encodeRGBA(aOptions, rgba, width, height, width * 4);
+      encoded = WebP.encodeRGBA(aOptions, rgba, width, height, width * 4);
     } else {
       byte[] rgb = extractRGB(aBitmap);
-      WebP.encodeRGB(aOptions, rgb, width, height, width * 3);
+      encoded = WebP.encodeRGB(aOptions, rgb, width, height, width * 3);
     }
+    aOutputStream.write(encoded);
   }
 
   private static byte[] extractRGBA(Bitmap aBitmap) {
@@ -67,7 +69,7 @@ public class WebPBitmapCodec {
 
     byte[] rgb = new byte[width * height * 3];
 
-    for (int in = 0, out = 0; in < rgb.length; in++, out += 3) {
+    for (int in = 0, out = 0; in < argb.length; in++, out += 3) {
       rgb[out] = (byte)(argb[in] >> 16);
       rgb[out + 1] = (byte)(argb[in] >> 8);
       rgb[out + 2] = (byte)(argb[in]);
