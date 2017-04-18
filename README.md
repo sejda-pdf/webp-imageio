@@ -71,17 +71,22 @@ writer.write(null, new IIOImage(image, null, null), writeParam);
 
 # Compiling
 
-## Compiling the native library
+## Compiling the native library for Java SE
 - Install CMake 2.8 or newer. CMake can be downloaded from www.cmake.org or installed using
   your systems package manager.
-- Create a directory called 'build' in the root of the project
+- Create a directory called `build` in the root of the project
 - Open a terminal and navigate to the newly created 'build' directory
-- Run 'cmake ..' in the 'build' directory to generate the build scripts for your system.
-- 'cmake --build .' to compile the library
-- The compiled library can be found under the directory 'build/src/main/c'
+- Run `cmake ..` in the 'build' directory to generate the build scripts for your system.
+- `cmake --build .` to compile the library
+- The compiled library can be found under the directory `build/src/main/c`
+
+## Compiling the native library for Android
+- Install the Android NDK.
+- Run ndk-build in the `src/android` directory
+- After completion `libwebp-imageio.so` can be found under `src/android/libs/<abi>`
 
 ## Compiling the Java library
 
 ### Using Gradle
-- Run 'gradle build -x test' in the root of the project
-- The compiled Java library can be found under the 'target' directory
+- Run `gradle build -x test` in the root of the project
+- The compiled Java library can be found under the `target` directory
