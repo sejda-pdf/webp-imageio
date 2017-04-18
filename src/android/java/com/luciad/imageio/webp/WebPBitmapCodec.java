@@ -5,13 +5,13 @@ import android.graphics.Bitmap;
 import java.io.IOException;
 
 public class WebPBitmapCodec {
-  public static Bitmap decodeByteArray(byte[] aData, int aOffset, int aLength) throws IOException {
-    return decodeByteArray(aData, aOffset, aLength, new WebPDecoderOptions());
+  public static Bitmap decodeByteArray(byte[] aData) throws IOException {
+    return decodeByteArray(aData, new WebPDecoderOptions());
   }
 
-  public static Bitmap decodeByteArray(byte[] aData, int aOffset, int aLength, WebPDecoderOptions aOptions) throws IOException {
+  public static Bitmap decodeByteArray(byte[] aData, WebPDecoderOptions aOptions) throws IOException {
     int[] outParams = new int[4];
-    int[] pixels = WebP.decode(aOptions, aData, aOffset, aLength, outParams);
+    int[] pixels = WebP.decode(aOptions, aData, 0, aData.length, outParams);
 
     int width = outParams[1];
     int height = outParams[2];
