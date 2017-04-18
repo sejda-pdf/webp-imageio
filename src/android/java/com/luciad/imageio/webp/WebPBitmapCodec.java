@@ -1,9 +1,8 @@
 package com.luciad.imageio.webp;
 
-import java.io.IOException;
-import java.io.OutputStream;
-
 import android.graphics.Bitmap;
+
+import java.io.IOException;
 
 public class WebPBitmapCodec {
   public static Bitmap decodeByteArray(byte[] aData, int aOffset, int aLength) throws IOException {
@@ -22,23 +21,21 @@ public class WebPBitmapCodec {
     );
   }
 
-  public static void compress(Bitmap aBitmap, OutputStream aOutputStream) throws IOException {
-    compress(aBitmap, aOutputStream, new WebPEncoderOptions());
+  public static byte[] compress(Bitmap aBitmap) throws IOException {
+    return compress(aBitmap, new WebPEncoderOptions());
   }
 
-  public static void compress(Bitmap aBitmap, OutputStream aOutputStream, WebPEncoderOptions aOptions) throws IOException {
+  public static byte[] compress(Bitmap aBitmap, WebPEncoderOptions aOptions) throws IOException {
     int width = aBitmap.getWidth();
     int height = aBitmap.getHeight();
 
-    byte[] encoded;
     if (aBitmap.hasAlpha()) {
       byte[] rgba = extractRGBA(aBitmap);
-      encoded = WebP.encodeRGBA(aOptions, rgba, width, height, width * 4);
+      return WebP.encodeRGBA(aOptions, rgba, width, height, width * 4);
     } else {
       byte[] rgb = extractRGB(aBitmap);
-      encoded = WebP.encodeRGB(aOptions, rgb, width, height, width * 3);
+      return WebP.encodeRGB(aOptions, rgb, width, height, width * 3);
     }
-    aOutputStream.write(encoded);
   }
 
   private static byte[] extractRGBA(Bitmap aBitmap) {
