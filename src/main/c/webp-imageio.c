@@ -109,7 +109,7 @@ JNIEXPORT jint JNICALL Java_com_luciad_imageio_webp_WebP_getInfo(
   jint data_size = 0;
   uint8_t* data_ptr = NULL;
 
-  data_ptr = (*env)->GetPrimitiveArrayCritical(env, data, NULL) + offset;
+  data_ptr = (uint8_t*)((*env)->GetPrimitiveArrayCritical(env, data, NULL)) + offset;
   if (data_ptr == NULL) {
     result = VP8_STATUS_INVALID_PARAM;
     goto exit;
@@ -158,7 +158,7 @@ JNIEXPORT jintArray JNICALL Java_com_luciad_imageio_webp_WebP_decode(
   config.options = *((WebPDecoderOptions*)(intptr_t)optionsPtr);
 
   // Retrieve the bitstream features to determine the image's intrinsic size.
-  data_ptr = (*env)->GetPrimitiveArrayCritical(env, data, NULL) + offset;
+  data_ptr = (uint8_t*)((*env)->GetPrimitiveArrayCritical(env, data, NULL)) + offset;
   if (data_ptr == NULL) {
     flags_ptr[0] = VP8_STATUS_INVALID_PARAM;
     goto exit;
@@ -188,7 +188,7 @@ JNIEXPORT jintArray JNICALL Java_com_luciad_imageio_webp_WebP_decode(
     goto exit;
   }
 
-  data_ptr = (*env)->GetPrimitiveArrayCritical(env, data, NULL) + offset;
+  data_ptr = (uint8_t*)((*env)->GetPrimitiveArrayCritical(env, data, NULL)) + offset;
   pixels_ptr = (*env)->GetPrimitiveArrayCritical(env, pixels, NULL);
   if (data_ptr == NULL || pixels_ptr == NULL) {
     flags_ptr[0] = VP8_STATUS_INVALID_PARAM;
