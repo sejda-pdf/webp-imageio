@@ -88,5 +88,5 @@ writer.write(null, new IIOImage(image, null, null), writeParam);
 ## Compiling the Java library
 
 ### Using Gradle
-- Run `gradle build -x test` in the root of the project
+- Run `./gradlew build -x test` in the root of the project
 - The compiled Java library can be found under the `build` directory
