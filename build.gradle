@@ -1,8 +1,16 @@
+import org.gradle.api.artifacts.maven.MavenDeployment
+
 repositories {
     mavenCentral()
 }
 
 apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'signing'
+
+group = 'org.sejda.webp-imageio'
+version       = "0.1.0"
+ext.packaging = 'jar'
 
 dependencies {
     testCompile 'junit:junit:4.11'
@@ -20,6 +28,62 @@ sourceSets {
     }
 }
 
-tasks.withType(Test) {
-  systemProperty 'java.library.path', file('build/src/main/c')
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from 'build/docs/javadoc'
+}
+
+task sourcesJar(type: Jar) {
+    from sourceSets.main.allSource
+    classifier = 'sources'
+}
+
+signing {
+    sign configurations.archives
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                authentication(userName: sonatypeUsername, password: sonatypePassword)
+            }
+
+            pom.project {
+                name 'webp-imageio'
+                packaging 'jar'
+                description 'WebP support for Java ImageIO'
+                url 'https://github.com/sejda-pdf/webp-imageio'
+
+                scm {
+                    url 'scm:git@github.com:sejda-pdf/webp-imageio.git'
+                    connection 'scm:git@github.com:sejda-pdf/webp-imageio.git'
+                    developerConnection 'scm:git@github.com:sejda-pdf/webp-imageio.git'
+                }
+
+                licenses {
+                    license {
+                        name 'Apache 2.0 License'
+                        url 'https://www.apache.org/licenses/LICENSE-2.0.html'
+                        distribution 'repo'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id 'ediweissmann'
+                        name 'Edi Weissmann'
+                    }
+                }
+            }
+        }
+    }
+}
+
+artifacts {
+    archives jar
+    archives javadocJar
+    archives sourcesJar
 }
