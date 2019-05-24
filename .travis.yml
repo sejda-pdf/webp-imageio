@@ -2,13 +2,11 @@ os:
   - linux
   - osx
 
-dist: trusty
-
 language: java
 install: true
 
 jdk:
-  - openjdk8
+  - openjdk9
 
 script:
   - ./gradlew test
