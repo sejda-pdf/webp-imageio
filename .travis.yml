@@ -1,7 +1,8 @@
 os:
   - linux
   - osx
-  - windows
+# travis not making java happy on windows yet
+#  - windows
 
 osx_image: xcode9.3
 
