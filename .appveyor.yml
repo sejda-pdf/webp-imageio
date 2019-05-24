@@ -1,0 +1,10 @@
+version: build {build} {branch}
+
+install:
+  - cmd: java -version
+
+build_script:
+  - gradlew build
+
+test_script:
+  - gradlew test
