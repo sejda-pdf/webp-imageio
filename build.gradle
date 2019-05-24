@@ -9,7 +9,8 @@ apply plugin: 'maven'
 apply plugin: 'signing'
 
 group = 'org.sejda.webp-imageio'
-version       = "0.1.0"
+name = 'webp-imageio'
+version       = "0.1.1"
 ext.packaging = 'jar'
 
 dependencies {
@@ -41,6 +42,19 @@ task sourcesJar(type: Jar) {
 signing {
     sign configurations.archives
 }
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId 'org.sejda.webp-imageio'
+            artifactId 'webp-imageio'
+            version '0.1.1'
+
+            from components.java
+        }
+    }
+}
+
 
 uploadArchives {
     repositories {
