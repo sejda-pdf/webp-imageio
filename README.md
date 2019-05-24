@@ -1,5 +1,17 @@
+![Travis build status](https://api.travis-ci.org/sejda-pdf/webp-imageio.svg?branch=master)
+
 # Forked repository
 This is a fork from [luciad/webp-imageio](https://bitbucket.org/luciad/webp-imageio/)
+
+# Changes
+- Native libs are bundled in the jar
+- Published to Maven Central (`org.sejda.webp-imageio`:`webp-imageio` artifact)
+- Android support unknown (have not tested)
+
+# Supported platforms
+- windows (32, 64 bit)
+- linux (64 bit)
+- mac (64 bit)
 
 --------------
 
@@ -11,8 +23,7 @@ This is a fork from [luciad/webp-imageio](https://bitbucket.org/luciad/webp-imag
 webp-imageio is distributed under the [Apache Software License](https://www.apache.org/licenses/LICENSE-2.0) version 2.0.
 
 # Usage
-- Add webp-imageio.jar to the classpath of your application
-- Ensure libwebp-imageio.so, libwebp-imageio.dylib or webp-imageio.dll is accessible on the Java native library path (java.library.path system property)
+- Add Maven dependency `org.sejda.webp-imageio`:`webp-imageio` to your application
 - The WebP reader and writer can be used like any other Image I/O reader and writer.
 
 ## Decoding
@@ -82,9 +93,11 @@ writer.write(null, new IIOImage(image, null, null), writeParam);
   your systems package manager.
 - Create a directory called `build` in the root of the project
 - Open a terminal and navigate to the newly created 'build' directory
-- Run `cmake ..` in the 'build' directory to generate the build scripts for your system.
+- Run `cmake ..` in the 'build' directory to generate the build scripts for your system. 
+On Windows 64 bit run `cmake -DCMAKE_GENERATOR_PLATFORM=x64 ..` to get a 64 bit dll.
 - `cmake --build .` to compile the library
 - The compiled library can be found under the directory `build/src/main/c`
+- Copy the compiled library to `src/main/resources/native/$platform/$bits`
 
 ## Compiling the native library for Android
 - Install the Android NDK.
