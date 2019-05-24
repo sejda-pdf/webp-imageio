@@ -2,13 +2,10 @@ os:
   - linux
   - osx
 
-osx_image: xcode6.4
+osx_image: xcode9.3
 
 language: java
 install: true
-
-jdk:
-  - openjdk8
 
 script:
   - ./gradlew test
