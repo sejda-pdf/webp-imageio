@@ -22,4 +22,9 @@ jobs:
           
       script: ./gradlew test
 
+      after_script:
+        - |-
+          ps
+          tasklist
+
 install: true
