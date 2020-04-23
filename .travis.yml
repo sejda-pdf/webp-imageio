@@ -1,13 +1,12 @@
-os:
-  - linux
-  - osx
-# travis not making java happy on windows yet
-#  - windows
-
-osx_image: xcode9
-dist: xenial
-
 language: java
+jobs:
+  include:
+    - os: linux
+      dist: xenial
+      jdk: openjdk8
+    - os: osx
+      osx_image: xcode9
+
 install: true
 
 script:
