@@ -10,7 +10,7 @@ apply plugin: 'signing'
 apply plugin: 'maven-publish'
 
 group = 'org.sejda.imageio'
-version       = "0.1.1"
+version       = "0.1.2"
 ext.packaging = 'jar'
 
 dependencies {
@@ -72,7 +72,7 @@ uploadArchives {
 
             repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
                 // Uncomment when publishing to Maven Central
-                //authentication(userName: sonatypeUsername, password: sonatypePassword)
+                // authentication(userName: "sejda", password: "")
             }
 
             pom.project {
