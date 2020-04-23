@@ -91,11 +91,12 @@ writer.write(null, new IIOImage(image, null, null), writeParam);
 ## Compiling the native library for Java SE
 - Install CMake 2.8 or newer. CMake can be downloaded from www.cmake.org or installed using
   your systems package manager.
+- Install VS 2017 Community and make sure the C++/Cmake dev tools modules are installed
 - Create a directory called `build` in the root of the project
 - Open a terminal and navigate to the newly created 'build' directory
-- Run `cmake ..` in the 'build' directory to generate the build scripts for your system. 
+- Run `cmake ..` in the 'build' directory to generate the build scripts for your system.
 On Windows 64 bit run `cmake -DCMAKE_GENERATOR_PLATFORM=x64 ..` to get a 64 bit dll.
-- `cmake --build .` to compile the library
+- `cmake --build . --config Release` to compile the library
 - The compiled library can be found under the directory `build/src/main/c`
 - Copy the compiled library to `src/main/resources/native/$platform/$bits`
 
@@ -107,6 +108,6 @@ On Windows 64 bit run `cmake -DCMAKE_GENERATOR_PLATFORM=x64 ..` to get a 64 bit 
 ## Compiling the Java library
 
 ### Using Gradle
-- Run `./gradlew build -x test` in the root of the project
+- Run `gradlew.bat build -x test` in the root of the project
 - The compiled Java library can be found under the `build` directory
 - Run `gradle build test uploadArchives` to upload to OSS Nexus, then [login](https://oss.sonatype.org/#stagingRepositories) and publish to Maven Central
