@@ -57,7 +57,7 @@ publishing {
         maven(MavenPublication) {
             groupId 'org.sejda.imageio'
             artifactId 'imageio-webp'
-            version '0.1.1'
+            version '0.1.2'
 
             from components.java
         }
