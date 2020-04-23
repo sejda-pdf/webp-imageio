@@ -20,9 +20,9 @@ jobs:
           export PATH=${JAVA_HOME}/bin:${PATH}
           choco install jdk8 -params 'installdir=c:\\jdk' -y
           java -version
-          cd
-          dir
+          pwd -W
+          ls -lart
           
-      script: gradlew.bat test
+      script: cmd //c gradlew.bat test
 
 install: true
