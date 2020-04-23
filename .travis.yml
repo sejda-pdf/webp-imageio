@@ -4,11 +4,9 @@ os:
 # travis not making java happy on windows yet
 #  - windows
 
-osx_image: xcode9.3
+osx_image: xcode9
 
 language: java
-jdk:
-  - openjdk8
 install: true
 
 script:
