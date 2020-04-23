@@ -20,11 +20,6 @@ jobs:
           choco install jdk8 -params 'installdir=c:\\jdk' -y
           java -version
           
-      script: ./gradlew test
-
-      after_script:
-        - |-
-          ps
-          tasklist
+      script: ./gradlew test && travis_terminate 0
 
 install: true
