@@ -3,6 +3,8 @@
 # Forked repository
 This is a fork from [luciad/webp-imageio](https://bitbucket.org/luciad/webp-imageio/)
 
+Available in Maven Central under `org.sejda.imageio`:`webp-imageio`
+
 # Changes
 - Native libs are bundled in the jar
 - Published to Maven Central (`org.sejda.imageio`:`imageio-webp` artifact)
@@ -23,7 +25,7 @@ This is a fork from [luciad/webp-imageio](https://bitbucket.org/luciad/webp-imag
 webp-imageio is distributed under the [Apache Software License](https://www.apache.org/licenses/LICENSE-2.0) version 2.0.
 
 # Usage
-- Add Maven dependency `org.sejda.imageio`:`imageio-webp` to your application
+- Add Maven dependency `org.sejda.imageio`:`webp-imageio` to your application
 - The WebP reader and writer can be used like any other Image I/O reader and writer.
 
 ## Decoding
