@@ -3,11 +3,9 @@
 # Forked repository
 This is a fork from [luciad/webp-imageio](https://bitbucket.org/luciad/webp-imageio/)
 
-Available in Maven Central under `org.sejda.imageio`:`webp-imageio`
-
 # Changes
 - Native libs are bundled in the jar
-- Published to Maven Central (`org.sejda.imageio`:`imageio-webp` artifact)
+- Published to Maven Central (`org.sejda.imageio`:`webp-imageio` artifact)
 - Android support unknown (have not tested)
 
 # Supported platforms
