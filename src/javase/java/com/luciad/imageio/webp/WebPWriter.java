@@ -83,13 +83,22 @@ class WebPWriter extends ImageWriter {
       throw new NullPointerException("Image may not be null");
     }
 
-    boolean encodeAlpha = hasTranslucency(aImage);
-    if (encodeAlpha) {
-      byte[] rgbaData = getRGBA(aImage);
-      return WebP.encodeRGBA(aOptions, rgbaData, aImage.getWidth(), aImage.getHeight(), aImage.getWidth() * 4);
-    } else {
-      byte[] rgbData = getRGB(aImage);
-      return WebP.encodeRGB(aOptions, rgbData, aImage.getWidth(), aImage.getHeight(), aImage.getWidth() * 3);
+    ThreadLocal<WebPEncoderOptions> encoderThreadLocal = new ThreadLocal<>();
+    try {
+      encoderThreadLocal.set(aOptions);
+
+      byte[] pixels;
+      boolean encodeAlpha = hasTranslucency(aImage);
+      if (encodeAlpha) {
+        byte[] rgbaData = getRGBA(aImage);
+        pixels = WebP.encodeRGBA(aOptions, rgbaData, aImage.getWidth(), aImage.getHeight(), aImage.getWidth() * 4);
+      } else {
+        byte[] rgbData = getRGB(aImage);
+        pixels = WebP.encodeRGB(aOptions, rgbData, aImage.getWidth(), aImage.getHeight(), aImage.getWidth() * 3);
+      }
+      return pixels;
+    } finally {
+      encoderThreadLocal.remove();
     }
   }
 
