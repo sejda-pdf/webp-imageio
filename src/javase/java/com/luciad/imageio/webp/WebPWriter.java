@@ -83,6 +83,9 @@ class WebPWriter extends ImageWriter {
       throw new NullPointerException("Image may not be null");
     }
 
+    // This prevents the JVM/GC from attempting to GC (during periods of high load) when it no longer sees any of the 
+    // variables being referred to any further, despite the underlying WebP library directly using them.
+    // https://bitbucket.org/luciad/webp-imageio/pull-requests/3/prevent-webpencoderoptionss-finalizer/diff
     ThreadLocal<WebPEncoderOptions> encoderThreadLocal = new ThreadLocal<>();
     try {
       encoderThreadLocal.set(aOptions);
