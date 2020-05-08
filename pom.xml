@@ -12,6 +12,11 @@
         <url>https://github.com/sejda-pdf/webp-imageio/issues</url>
     </issueManagement>
 
+    <organization>
+        <name>sejda.com</name>
+        <url>http://www.sejda.com</url>
+    </organization>
+
     <licenses>
         <license>
             <name>Apache License, Version 2.0</name>
