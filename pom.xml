@@ -12,6 +12,9 @@
         <url>https://github.com/sejda-pdf/webp-imageio/issues</url>
     </issueManagement>
 
+    <description>webp support for ImageIO</description>
+    <url>https://github.com/sejda-pdf/webp-imageio</url>
+
     <organization>
         <name>sejda.com</name>
         <url>http://www.sejda.com</url>
