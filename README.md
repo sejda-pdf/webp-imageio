@@ -107,7 +107,7 @@ On Windows 64 bit run `cmake -DCMAKE_GENERATOR_PLATFORM=x64 ..` to get a 64 bit 
 
 ## Compiling the Java library
 
-### Using Gradle
-- Run `gradlew.bat build -x test` in the root of the project
+### Using Maven
+- Run `mvn clean test` in the root of the project
 - The compiled Java library can be found under the `build` directory
-- Run `gradle build test uploadArchives` to upload to OSS Nexus, then [login](https://oss.sonatype.org/#stagingRepositories) and publish to Maven Central
+- Run `mvn release:prepare release:perform -Prelease -Darguments="-Dgpg.passphrase=secret123 -DstagingDescription=sambox"` to upload to OSS Nexus, then [login](https://oss.sonatype.org/#stagingRepositories) and publish to Maven Central

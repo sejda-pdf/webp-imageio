@@ -4,12 +4,12 @@ jobs:
       language: java
       dist: xenial
       jdk: openjdk8
-      script: ./gradlew test
+      script: mvn clean test
       
     - os: osx
       language: java
       osx_image: xcode9
-      script: ./gradlew test
+      script: mvn clean test
       
     - os: windows
       language: shell
@@ -20,6 +20,6 @@ jobs:
           choco install jdk8 -params 'installdir=c:\\jdk' -y
           java -version
           
-      script: ./gradlew test && travis_terminate 0
+      script: mvn clean test
 
 install: true
