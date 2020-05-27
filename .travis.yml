@@ -22,6 +22,8 @@ jobs:
           choco install maven -y
           java -version
           echo $PATH
+          ls $MAVEN_HOME
+          ls $MAVEN_HOME/bin
           mvn -version
           
       script: mvn clean test
