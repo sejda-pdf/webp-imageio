@@ -16,9 +16,12 @@ jobs:
       before_install:
         - |-
           export JAVA_HOME=${JAVA_HOME:-/c/jdk}
-          export PATH=${JAVA_HOME}/bin:${PATH}
+          export MAVEN_HOME=${JAVA_HOME:-/c/mvn}
+          export PATH=${JAVA_HOME}/bin:${MAVEN_HOME}/bin:${PATH}
           choco install jdk8 -params 'installdir=c:\\jdk' -y
+          choco install maven -params 'installdir=c:\\mvn' -y
           java -version
+          mvn -version
           
       script: mvn clean test
 
