@@ -16,13 +16,14 @@ jobs:
       before_install:
         - |-
           export JAVA_HOME=${JAVA_HOME:-/c/jdk}
-          export MAVEN_HOME=${MAVEN_HOME:-/c/ProgramData/chocolatey/lib/maven}
+          export MAVEN_HOME=${MAVEN_HOME:-/c/ProgramData/chocolatey/lib/maven/apache-maven-3.6.3}
           export PATH=${JAVA_HOME}/bin:${MAVEN_HOME}/bin:${PATH}
           choco install jdk8 -params 'installdir=c:\\jdk' -y
-          choco install maven -y
+          choco install maven --version 3.6.3 -y
           java -version
-          echo $PATH
+          echo $MAVEN_HOME
           ls $MAVEN_HOME
+          echo $MAVEN_HOME/bin
           ls $MAVEN_HOME/bin
           mvn -version
           
