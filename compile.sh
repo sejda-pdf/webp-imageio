@@ -7,9 +7,9 @@ cmake --build .
 cd ../../..
 
 LIB="libwebp-imageio.so"
-if [ "$1" == "windows" ]; then
+if [ "$1" == "Windows" ]; then
   LIB="webp-imageio.dll"
-elif [ "$1" == "mac" ]; then
+elif [ "$1" == "Mac" ]; then
   LIB="libwebp-imageio.dylib"
 fi
 
