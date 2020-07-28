@@ -2,7 +2,7 @@
 mkdir -p build/$1/$2
 cd build/$1/$2
 cmake ../../..
-cmake --build .
+cmake --build . --config Release
 
 cd ../../..
 
