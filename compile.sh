@@ -1,7 +1,14 @@
 #!/usr/bin/env bash
+echo Building for OS: $1, Arch: $2, Toolchain: $3
 mkdir -p build/$1/$2
 cd build/$1/$2
-cmake ../../..
+
+if [ -z "$3" ]; then
+  cmake ../../..
+else
+  cmake ../../.. -DCMAKE_TOOLCHAIN_FILE=$3
+fi
+
 cmake --build . --config Release
 
 cd ../../..

@@ -8,3 +8,5 @@
 
 ./dockcross/dockcross-windows-static-x86 bash -c './compile.sh Windows x86'
 ./dockcross/dockcross-windows-static-x64 bash -c './compile.sh Windows x86_64'
+
+docker run --rm -v $(pwd):/workdir -e CROSS_TRIPLE=x86_64-apple-darwin multiarch/crossbuild ./compile.sh Mac x86_64 /workdir/multiarch-darwin.cmake
