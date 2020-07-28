@@ -12,9 +12,6 @@ add_library( webp-imageio SHARED ${JNI_OBJS} )
 include_directories( "${WEBP_HOME}/src" )
 target_link_libraries( webp-imageio webp )
 
-#find_package ( JNI REQUIRED COMPONENTS Development )
-#include_directories( ${JNI_INCLUDE_DIRS} )
-
 set(
   JNI_INCLUDE_DIRS
   ${CMAKE_CURRENT_SOURCE_DIR}/jni
@@ -23,13 +20,15 @@ set(
       JNI_MD_INCLUDE_DIRS
       ${JNI_INCLUDE_DIRS}/unix
    )
-if (WIN32)
+
+if ( WIN32 )
     set(
       JNI_MD_INCLUDE_DIRS
       ${JNI_INCLUDE_DIRS}/windows
     )
 endif()
-if (APPLE)
+
+if ( APPLE )
     set(
       JNI_MD_INCLUDE_DIRS
       ${JNI_INCLUDE_DIRS}/darwin
@@ -60,6 +59,5 @@ if ( WIN32 )
 endif()
 
 if ( APPLE )
-  target_compile_options( webp-imageio PRIVATE -mmacosx-version-min=10.5 )
   set_target_properties( webp-imageio PROPERTIES MACOSX_RPATH OFF )
 endif()
