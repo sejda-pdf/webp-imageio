@@ -6,6 +6,5 @@
 ./dockcross/dockcross-linux-x64 bash -c './compile.sh Linux x86_64'
 ./dockcross/dockcross-linux-ppc64le bash -c './compile.sh Linux ppc64'
 
-# Windows builds are not passing tests on Travis
-#./dockcross/dockcross-windows-shared-x86 bash -c './compile.sh Windows x86'
-#./dockcross/dockcross-windows-shared-x64 bash -c './compile.sh Windows x86_64'
+./dockcross/dockcross-windows-static-x86 bash -c './compile.sh Windows x86'
+./dockcross/dockcross-windows-static-x64 bash -c './compile.sh Windows x86_64'
