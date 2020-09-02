@@ -54,7 +54,13 @@ final class WebP {
       throw new IllegalArgumentException("Offset/length exceeds array size");
     }
 
-    int[] pixels = decode(aOptions.fPointer, aData, aOffset, aLength, aOut, ByteOrder.nativeOrder().equals(ByteOrder.BIG_ENDIAN));
+    int[] pixels;
+    try {
+        pixels = decode(aOptions.fPointer, aData, aOffset, aLength, aOut, ByteOrder.nativeOrder().equals(ByteOrder.BIG_ENDIAN));
+    } finally {
+        aOptions.objectCanBeFinalized();
+    }
+
     VP8StatusCode status = VP8StatusCode.getStatusCode(aOut[0]);
     switch (status) {
       case VP8_STATUS_OK:
@@ -83,13 +89,21 @@ final class WebP {
   private static native int getInfo(byte[] aData, int aOffset, int aLength, int[] aOut);
 
   public static byte[] encodeRGBA(WebPEncoderOptions aOptions, byte[] aRgbaData, int aWidth, int aHeight, int aStride) {
-    return encodeRGBA(aOptions.fPointer, aRgbaData, aWidth, aHeight, aStride);
+      try {
+          return encodeRGBA(aOptions.fPointer, aRgbaData, aWidth, aHeight, aStride);
+      } finally {
+          aOptions.objectCanBeFinalized();
+      }
   }
 
   private static native byte[] encodeRGBA(long aConfig, byte[] aRgbaData, int aWidth, int aHeight, int aStride);
 
   public static byte[] encodeRGB(WebPEncoderOptions aOptions, byte[] aRgbaData, int aWidth, int aHeight, int aStride) {
-    return encodeRGB(aOptions.fPointer, aRgbaData, aWidth, aHeight, aStride);
+    try {
+        return encodeRGB(aOptions.fPointer, aRgbaData, aWidth, aHeight, aStride);
+    } finally {
+        aOptions.objectCanBeFinalized();
+    }
   }
 
   private static native byte[] encodeRGB(long aConfig, byte[] aRgbaData, int aWidth, int aHeight, int aStride);

@@ -36,6 +36,20 @@ public final class WebPDecoderOptions {
     fPointer = 0L;
   }
 
+  /**
+   * Method to tell the Java Garbage collector that the object can now be released (and the native method
+   * is done working with the object).
+   *
+   * There is a finalizer in this object which clears the native assigned memory used by the WebP library
+   * during garbage collection. Without this method being properly called, garbage collection might happen
+   * before the native procedure has finished executing since the object is only forwarded via JNI by the
+   * fPointer and the underlying WebP library directly uses the complete object.
+   *
+   * This issue only manifests under high load because the time window between the native memory being used
+   * and the finalizer being called is very small.
+   */
+  public void objectCanBeFinalized() {};
+
   public int getCropHeight() {
     return getCropHeight( fPointer );
   }
