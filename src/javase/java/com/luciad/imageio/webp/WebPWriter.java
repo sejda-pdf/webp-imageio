@@ -83,25 +83,13 @@ class WebPWriter extends ImageWriter {
       throw new NullPointerException("Image may not be null");
     }
 
-    // This prevents the JVM/GC from attempting to GC (during periods of high load) when it no longer sees any of the 
-    // variables being referred to any further, despite the underlying WebP library directly using them.
-    // https://bitbucket.org/luciad/webp-imageio/pull-requests/3/prevent-webpencoderoptionss-finalizer/diff
-    ThreadLocal<WebPEncoderOptions> encoderThreadLocal = new ThreadLocal<>();
-    try {
-      encoderThreadLocal.set(aOptions);
-
-      byte[] pixels;
-      boolean encodeAlpha = hasTranslucency(aImage);
-      if (encodeAlpha) {
-        byte[] rgbaData = getRGBA(aImage);
-        pixels = WebP.encodeRGBA(aOptions, rgbaData, aImage.getWidth(), aImage.getHeight(), aImage.getWidth() * 4);
-      } else {
-        byte[] rgbData = getRGB(aImage);
-        pixels = WebP.encodeRGB(aOptions, rgbData, aImage.getWidth(), aImage.getHeight(), aImage.getWidth() * 3);
-      }
-      return pixels;
-    } finally {
-      encoderThreadLocal.remove();
+    boolean encodeAlpha = hasTranslucency(aImage);
+    if (encodeAlpha) {
+      byte[] rgbaData = getRGBA(aImage);
+      return WebP.encodeRGBA(aOptions, rgbaData, aImage.getWidth(), aImage.getHeight(), aImage.getWidth() * 4);
+    } else {
+      byte[] rgbData = getRGB(aImage);
+      return WebP.encodeRGB(aOptions, rgbData, aImage.getWidth(), aImage.getHeight(), aImage.getWidth() * 3);
     }
   }
 
