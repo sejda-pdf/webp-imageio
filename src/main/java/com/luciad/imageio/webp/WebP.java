@@ -18,18 +18,20 @@ package com.luciad.imageio.webp;
 import java.io.IOException;
 import java.nio.ByteOrder;
 
-final class WebP {
+public final class WebP {
   private static boolean NATIVE_LIBRARY_LOADED = false;
 
-  static synchronized void loadNativeLibrary() {
+  public static synchronized boolean loadNativeLibrary() {
     if (!NATIVE_LIBRARY_LOADED) {
       try {
         NativeLoader.initialize();
       } catch (Exception e) {
         e.printStackTrace();
+        return false;
       }
       NATIVE_LIBRARY_LOADED = true;
     }
+    return true;
   }
 
   // TODO: lazy load native library
