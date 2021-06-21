@@ -24,7 +24,7 @@ which is a fork from [luciad/webp-imageio](https://bitbucket.org/luciad/webp-ima
 webp-imageio is distributed under the [Apache Software License](https://www.apache.org/licenses/LICENSE-2.0) version 2.0.
 
 # Usage
-- Add Maven dependency `org.sejda.imageio`:`webp-imageio` to your application
+- Add Maven dependency `org.jadice.webtoolkit.imageio`:`webp-imageio` to your application
 - The WebP reader and writer can be used like any other Image I/O reader and writer.
 
 ## Decoding
