@@ -119,7 +119,17 @@ class NativeLibraryUtils {
       }
 
       File tmpLibraryFile = Files.createTempFile("", libFilename).toFile();
-      tmpLibraryFile.deleteOnExit();
+      tmpLibraryFile.deleteOnExit(); // this does not always work
+      // Do cleanup
+      try {
+        for (File oldLibFile : tmpLibraryFile.getParentFile().listFiles()) {
+          if (!oldLibFile.getName().equals(tmpLibraryFile.getName()) && oldLibFile.getName().endsWith(libFilename)) {
+            oldLibFile.delete();
+          }
+        }
+      } catch (Throwable ignored){
+      }
+
       try (FileOutputStream out = new FileOutputStream(tmpLibraryFile)) {
         byte[] buffer = new byte[8 * 1024];
         int bytesRead;

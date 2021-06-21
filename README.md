@@ -1,17 +1,18 @@
 ![Travis build status](https://api.travis-ci.org/sejda-pdf/webp-imageio.svg?branch=master)
 
 # Forked repository
-This is a fork from [luciad/webp-imageio](https://bitbucket.org/luciad/webp-imageio/)
+This is a fork from [sejda-pdf/webp-imageio](https://github.com/sejda-pdf/webp-imageio) 
+which is a fork from [luciad/webp-imageio](https://bitbucket.org/luciad/webp-imageio/).
 
-# Changes
-- Native libs are bundled in the jar
-- Published to Maven Central (`org.sejda.imageio`:`webp-imageio` artifact)
-- Android support unknown (have not tested)
+# Changes (to sejda-pdf)
+- Contains 32 bit Linux and ARM-64 Linux native libs
+- Performs a cleanup since File.deleteOnExit() is not reliable
 
 # Supported platforms
 - windows (32, 64 bit)
-- linux (64 bit)
+- linux (32, 64 bit)
 - mac (64 bit)
+- linux ARM (64 bit)
 
 --------------
 
