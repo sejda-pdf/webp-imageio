@@ -1,0 +1,78 @@
+name: Continuous Integration
+
+on:
+  push:
+    branches-ignore:
+      - 'master'
+    paths-ignore:
+      #   !! Attention!! removing the following line may produce an endless loop on the build system!!
+      - '**/README.md'
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    timeout-minutes: 15
+
+    strategy:
+      fail-fast: false
+      matrix:
+        jdk: [ 8 ]
+
+
+    steps:
+      - uses: actions/checkout@v2
+
+      ## Enable Caching
+      # Reduce cache size by excluding artifacts with the project.groupId
+      - uses: actions/cache@v2
+        with:
+          path: |
+            ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+
+      ## Configure JDK
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: ${{ matrix.jdk }}
+
+      ## Configure maven settings
+      - name: Prepare maven settings
+        env:
+          REPOSITORY_URL: "https://levigo.de/maven2/content/repositories/levigo-releases/"
+          REPOSITORY_RELEASE_USERID: ${{ secrets.PUB_NEXUS2_USERNAME }}
+          REPOSITORY_RELEASE_CREDENTIALS: ${{ secrets.PUB_NEXUS2_PASSWORD}}
+        run: |
+          mkdir -p ~/.m2
+          envsubst < ./.github/settings.xml > ~/.m2/settings.xml
+
+      ## Build with maven
+      - name: Perform build
+        uses: GabrielBB/xvfb-action@v1
+        with:
+          run: mvn -B verify -Dmaven.test.failure.ignore=true
+
+      ## Publish test report
+      - name: Publish Test Report for JDK ${{ matrix.jdk }}
+        id: test-report
+        uses: scacap/action-surefire-report@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          fail_on_test_failures: true
+          check_name: Test Report for JDK ${{ matrix.jdk }}
+
+      ## Notify Slack
+      - name: Notify slack
+        uses: hennejg/slack-build-notifier@v1.1
+        with:
+          username: GitHub
+          icon_emoji: octocat
+          channel: ci_docp
+          text: Performed mvn build with JDK ${{ matrix.jdk }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        if: always()

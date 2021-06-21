@@ -1,0 +1,142 @@
+name: Continuous Delivery
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    timeout-minutes: 15
+    env:
+      WEBPIMAGEIO_TAG_PREFIX: 'jadice-webp-imageio-'
+
+    steps:
+      - uses: actions/checkout@v2
+
+      ## compute the string of the next version
+      - name: Bump version and create tag
+        id: semanticversion
+        uses: hennejg/github-tag-action@v4.2.4
+        with:
+          release_branches: master
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          tag_prefix: ${{ env.WEBPIMAGEIO_TAG_PREFIX }}
+
+      ## check if the computed string of the next version is conform to our regex
+      - name: Verify and print new build number
+        run: |
+          if echo '${{ steps.semanticversion.outputs.new_tag }}' |grep -Eq '^${{ env.WEBPIMAGEIO_TAG_PREFIX }}[0-9]+[.][0-9]+[.][0-9]+$'; then
+            echo Tag '${{ steps.semanticversion.outputs.new_tag }}', New version '${{ steps.semanticversion.outputs.new_version }}', Changelog '${{ steps.semanticversion.outputs.changelog }}'
+          else
+            echo 'unexpected tag format - aborting'
+            exit -1
+          fi
+
+      ## Configure JDK
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 8
+
+      ## Enable Caching
+      # Reduce cache size by excluding artifacts with the project.groupId
+      - uses: actions/cache@v2
+        with:
+          path: |
+            ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      ## Configure maven settings
+      - name: Prepare maven settings
+        env:
+          REPOSITORY_URL: "https://levigo.de/maven2/content/repositories/levigo-releases/"
+          REPOSITORY_RELEASE_USERID: ${{ secrets.PUB_NEXUS2_USERNAME }}
+          REPOSITORY_RELEASE_CREDENTIALS: ${{ secrets.PUB_NEXUS2_PASSWORD}}
+        run: |
+          mkdir -p ~/.m2
+          envsubst < ./.github/settings.xml > ~/.m2/settings.xml
+
+      ## Build with maven
+      - name: Set version
+        id: version
+        run: |
+          echo Releasing as ${{ steps.semanticversion.outputs.new_version }}
+          mvn versions:set -DnewVersion=${{ steps.semanticversion.outputs.new_version }}
+
+      - name: Perform build
+        uses: GabrielBB/xvfb-action@v1
+        with:
+          run: mvn -B verify -Dmaven.test.failure.ignore=true
+
+      ## Publish test report
+      - name: Publish Test Report for JDK 8
+        id: test-report
+        uses: scacap/action-surefire-report@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          fail_on_test_failures: true
+          check_name: Test Report for JDK 8
+
+      ## Deploy
+      - name: Deploy packages
+        run: mvn -B deploy -DskipTests -Dmaven.install.skip=true
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          #don't use the GITHUB_TOKEN https://github:community/t/actions-not-triggered-on-release/17944/12:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.semanticversion.outputs.new_tag }}
+          release_name: ${{ steps.semanticversion.outputs.new_version }}
+
+
+      - name: Upload Release Asset - jar
+        id: upload-release-asset-jar
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
+          asset_path: ./target/webp-imageio-${{ steps.semanticversion.outputs.new_version }}.jar
+          asset_name: webp-imageio-${{ steps.semanticversion.outputs.new_version }}.jar
+          asset_content_type: application/java-archive
+
+      - name: Upload Release Asset - javadoc jar
+        id: upload-release-asset-javadoc-jar
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
+          asset_path: ./target/webp-imageio-${{ steps.semanticversion.outputs.new_version }}-javadoc.jar
+          asset_name: webp-imageio-${{ steps.semanticversion.outputs.new_version }}-javadoc.jar
+          asset_content_type: application/java-archive
+
+      - name: Upload Release Asset - sources jar
+        id: upload-release-asset-sources-jar
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
+          asset_path: ./target/webp-imageio-${{ steps.semanticversion.outputs.new_version }}-sources.jar
+          asset_name: webp-imageio-${{ steps.semanticversion.outputs.new_version }}-sources.jar
+          asset_content_type: application/java-archive
+
+      ## Notify Mattermost
+      - name: Notify slack
+        uses: hennejg/slack-build-notifier@v1.1
+        with:
+          username: GitHub
+          icon_emoji: octocat
+          channel: ci_docp
+          text: Released new version `${{ steps.semanticversion.outputs.new_version }}` of *${{ github.repository }}* to ${{ secrets.REPOSITORY_URL }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        if: always()
