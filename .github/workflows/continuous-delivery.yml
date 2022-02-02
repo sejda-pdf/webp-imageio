@@ -52,7 +52,7 @@ jobs:
       ## Configure maven settings
       - name: Prepare maven settings
         env:
-          REPOSITORY_URL: "https://levigo.de/maven2/content/repositories/levigo-releases/"
+          REPOSITORY_URL: ${{ secrets.LEVIGO_NEXUS_REGISTRY_RELEASES }}
           REPOSITORY_RELEASE_USERID: ${{ secrets.PUB_NEXUS2_USERNAME }}
           REPOSITORY_RELEASE_CREDENTIALS: ${{ secrets.PUB_NEXUS2_PASSWORD}}
         run: |
