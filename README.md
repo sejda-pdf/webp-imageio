@@ -11,7 +11,7 @@ which is a fork from [luciad/webp-imageio](https://bitbucket.org/luciad/webp-ima
 # Supported platforms
 - windows (32, 64 bit)
 - linux (32, 64 bit)
-- mac (64 bit)
+- mac (64 bit Intel & 64 bit ARM/Apple Silicon/M1)
 - linux ARM (64 bit)
 
 --------------

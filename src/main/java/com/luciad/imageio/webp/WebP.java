@@ -99,7 +99,10 @@ class NativeLibraryUtils {
 
   public static void loadFromJar() {
     String os = System.getProperty("os.name").toLowerCase();
-    String bits = System.getProperty("os.arch").contains("64") ? "64": "32";
+    String arch = System.getProperty("os.arch");
+    boolean arm = arch.contains("aarch");
+    String bits = arm ? "arm" :
+            (System.getProperty("os.arch").contains("64") ? "64": "32");
 
     String libFilename = "libwebp-imageio.so";
     String platform = "linux";
