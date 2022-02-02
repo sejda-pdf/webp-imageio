@@ -1,44 +1,21 @@
 <settings>
     <servers>
         <server>
-            <id>nexus</id>
-            <username>${REPOSITORY_USERID}</username>
-            <password>${REPOSITORY_CREDENTIALS}</password>
-        </server>
-        <server>
             <id>maven2.releases.levigo.de</id>
             <username>${REPOSITORY_RELEASE_USERID}</username>
             <password>${REPOSITORY_RELEASE_CREDENTIALS}</password>
         </server>
-        <server>
-            <id>${REGISTRY_URL}</id>
-            <username>${REPOSITORY_USERID}</username>
-            <password>${REPOSITORY_CREDENTIALS}</password>
-        </server>
     </servers>
-    <pluginGroups>
-        <pluginGroup>org.sonarsource.scanner.maven</pluginGroup>
-    </pluginGroups>
+
     <profiles>
-        <profile>
-            <id>sonar</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <properties>
-                <sonar.host.url>${SONAR_HOST_URL}</sonar.host.url>
-                <sonar.login>${SONAR_LOGIN}</sonar.login>
-            </properties>
-        </profile>
-        <!--
-         Downloading all maven artifacts from a mirror some 6000 miles away does not seem reasonable.
-         Therefore we download only the private artifacts from Nexus3 and all publicly available artifacts from maven-central.
-         -->
         <profile>
             <id>central-nexus</id>
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
+            <properties>
+                <altDeploymentRepository>maven2.releases.levigo.de::default::${REPOSITORY_URL}</altDeploymentRepository>
+            </properties>
             <repositories>
                 <repository>
                     <id>maven-central</id>
@@ -51,7 +28,7 @@
                     </releases>
                 </repository>
                 <repository>
-                    <id>nexus</id>
+                    <id>maven2.releases.levigo.de</id>
                     <url>${REPOSITORY_URL}</url>
                     <releases>
                         <enabled>true</enabled>
@@ -73,7 +50,7 @@
                     </releases>
                 </pluginRepository>
                 <pluginRepository>
-                    <id>nexus</id>
+                    <id>maven2.releases.levigo.de</id>
                     <url>${REPOSITORY_URL}</url>
                     <releases>
                         <enabled>true</enabled>

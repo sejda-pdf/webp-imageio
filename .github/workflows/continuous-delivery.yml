@@ -35,31 +35,18 @@ jobs:
 
       ## Configure JDK
       - name: Set up JDK
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v2
         with:
-          java-version: 8
-
-      ## Enable Caching
-      # Reduce cache size by excluding artifacts with the project.groupId
-      - uses: actions/cache@v2
-        with:
-          path: |
-            ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
+          distribution: 'temurin'
+          java-version: '8'
+          cache: 'maven'
 
       ## Configure maven settings
       - name: Prepare maven settings
         env:
-          REGISTRY_URL: 'artifacts.jadice.com'
-          REPOSITORY_URL: ${{ secrets.LEVIGO_NEXUS_REPO_ALL }}
-          REPOSITORY_USERID: ${{ secrets.LEVIGO_NEXUS_USERNAME }}
-          REPOSITORY_CREDENTIALS: ${{ secrets.LEVIGO_NEXUS_PASSWORD }}
-          REPOSITORY_RELEASE_USERID: ${{ secrets.NEXUS2_USERNAME }}
-          REPOSITORY_RELEASE_CREDENTIALS: ${{ secrets.NEXUS2_PASSWORD }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-          SONAR_LOGIN: ${{ secrets.SONAR_LOGIN }}
+          REPOSITORY_URL: ${{ secrets.NEXUS2_REPO_RELEASES }}
+          REPOSITORY_RELEASE_USERID: ${{ secrets.PUB_NEXUS2_USERNAME_RW }}
+          REPOSITORY_RELEASE_CREDENTIALS: ${{ secrets.PUB_NEXUS2_PASSWORD_RW }}
         run: |
           mkdir -p ~/.m2
           envsubst < ./.github/settings.xml > ~/.m2/settings.xml
@@ -93,7 +80,6 @@ jobs:
         id: create_release
         uses: actions/create-release@v1
         env:
-          #don't use the GITHUB_TOKEN https://github:community/t/actions-not-triggered-on-release/17944/12:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ steps.semanticversion.outputs.new_tag }}

@@ -5,7 +5,6 @@ on:
     branches-ignore:
       - 'master'
     paths-ignore:
-      #   !! Attention!! removing the following line may produce an endless loop on the build system!!
       - '**/README.md'
 
 jobs:
@@ -22,34 +21,20 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      ## Enable Caching
-      # Reduce cache size by excluding artifacts with the project.groupId
-      - uses: actions/cache@v2
-        with:
-          path: |
-            ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
-
-
       ## Configure JDK
       - name: Set up JDK
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v2
         with:
-          java-version: ${{ matrix.jdk }}
+          distribution: 'temurin'
+          java-version: '8'
+          cache: 'maven'
 
       ## Configure maven settings
       - name: Prepare maven settings
         env:
-          REGISTRY_URL: 'artifacts.jadice.com'
-          REPOSITORY_URL: ${{ secrets.LEVIGO_NEXUS_REPO_ALL }}
-          REPOSITORY_USERID: ${{ secrets.LEVIGO_NEXUS_USERNAME }}
-          REPOSITORY_CREDENTIALS: ${{ secrets.LEVIGO_NEXUS_PASSWORD }}
-          REPOSITORY_RELEASE_USERID: ${{ secrets.NEXUS2_USERNAME }}
-          REPOSITORY_RELEASE_CREDENTIALS: ${{ secrets.NEXUS2_PASSWORD }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-          SONAR_LOGIN: ${{ secrets.SONAR_LOGIN }}
+          REPOSITORY_URL: ${{ secrets.NEXUS2_REPO_RELEASES }}
+          REPOSITORY_RELEASE_USERID: ${{ secrets.PUB_NEXUS2_USERNAME }}
+          REPOSITORY_RELEASE_CREDENTIALS: ${{ secrets.PUB_NEXUS2_PASSWORD}}
         run: |
           mkdir -p ~/.m2
           envsubst < ./.github/settings.xml > ~/.m2/settings.xml
