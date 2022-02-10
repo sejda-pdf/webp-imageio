@@ -71,6 +71,7 @@ class WebPWriter extends ImageWriter {
 
     byte[] encodedData = encode(writeParam.getEncoderOptions(), ri);
     output.write(encodedData);
+    output.flush();
   }
 
   private static byte[] encode(WebPEncoderOptions aOptions, RenderedImage aImage) throws IOException
